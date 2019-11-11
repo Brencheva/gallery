@@ -10,14 +10,19 @@
 
 <footer class="footer">
     <form [formGroup]="formGroup"
-        (submit)="fetchPhotos()">
-        <input class="margin-right"
-            formControlName="query"
-            type="text"
-            required
-            placeholder="What do you want to find?"
-            autofocus>
+        (ngSubmit)="fetchPhotos()">
+        <mat-form-field class="margin-right">
+            <input formControlName="query"
+                matInput
+                type="text"
+                required
+                placeholder="What do you want to find?"
+                autofocus>
+        </mat-form-field>
 
-        <button type="submit">Find</button>
+        <button type="submit"
+            mat-button>
+            Find
+        </button>
     </form>
 </footer>

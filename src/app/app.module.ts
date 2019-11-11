@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -7,6 +8,7 @@ import { StoreModule } from '@ngrx/store';
 import { photoReducer } from './store/reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { PhotoEffects } from './store/effects';
+import { MatFormFieldModule, MatInputModule, MatButtonModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,11 @@ import { PhotoEffects } from './store/effects';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
+    MatButtonModule,
+    MatInputModule,
+    MatFormFieldModule,
     ReactiveFormsModule,
     StoreModule.forRoot({ 'photo': photoReducer }),
     EffectsModule.forRoot([PhotoEffects])
