@@ -3,7 +3,7 @@ import { Effect, Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { PhotoState } from './state';
 import { FetchPhotos, ActionType, PhotosRecieved, PhotosFailed, } from './actions';
-import { mergeMap, map, tap, catchError } from 'rxjs/operators';
+import { mergeMap, map, tap, catchError, debounceTime } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Photo } from '../interfaces/photo'; import { UnsplashService } from '../services/unsplash.service';
 
@@ -20,21 +20,15 @@ export class PhotoEffects {
     fetchPhotos$ = this.actions$.pipe(
         ofType<FetchPhotos>(ActionType.FETCH_PHOTOS),
 
+        debounceTime(500),
+
         mergeMap((action) => {
             const { query } = action.payload;
 
             return this.unsplashService.fetchPhotos(query)
                 .pipe(
                     map((photos: Photo[]) => {
-                        const actionPayload = photos.sort(sortByDate);
-                        actionPayload.forEach(a => console.log(a.updated_at));
-
-                        function sortByDate(itemA: Photo, itemB: Photo): number {
-                            const dateA = new Date(itemA.updated_at);
-                            const dateB = new Date(itemB.updated_at);
-
-                            return dateA > dateB ? 1 : -1;
-                        }
+                        const actionPayload = photos.sort(this.sortByDate);
 
                         return new PhotosRecieved(actionPayload);
                     }),
@@ -58,4 +52,11 @@ export class PhotoEffects {
             alert(`Something goes wrong. Error: ${action.payload.message}`);
         })
     )
+
+    sortByDate(itemA: Photo, itemB: Photo): number {
+        const dateA = new Date(itemA.updated_at);
+        const dateB = new Date(itemB.updated_at);
+
+        return dateA < dateB ? 1 : -1;
+    }
 }

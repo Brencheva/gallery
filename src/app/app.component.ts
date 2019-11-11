@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { Photo } from './interfaces/photo';
 import { selectPhotos } from './store/selectors';
 import { FetchPhotos } from './store/actions';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 
 @Component(
@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
 
   formGroup: FormGroup = new FormGroup(
     {
-      query: new FormControl(''),
+      query: new FormControl('', Validators.required),
     }
   );
 
