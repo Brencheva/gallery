@@ -8,3 +8,13 @@ body, html {
 *::after {
     box-sizing: inherit;
 }
+
+.margin-right {
+    margin-right: 15px;
+}
+
+.list-style-none {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
