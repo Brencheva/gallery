@@ -1,28 +1,30 @@
-<main class="content">
+<main>
+  <cdk-virtual-scroll-viewport class="content"
+                               [itemSize]="90">
     <ul class="grid-box list-style-none">
-        <li *ngFor="let photo of photos$ | async">
-            <img class="image"
-                [src]="photo.urls.small"
-                [alt]="photo.alt_description">
-        </li>
+      <li *cdkVirtualFor="let photo of photos$ | async">
+        <img class="image"
+             [src]="photo.urls.small"
+             [alt]="photo.alt_description">
+      </li>
     </ul>
+  </cdk-virtual-scroll-viewport>
 </main>
 
 <footer class="footer">
-    <form [formGroup]="formGroup"
-        (ngSubmit)="fetchPhotos()">
-        <mat-form-field class="margin-right">
-            <input formControlName="query"
-                matInput
-                type="text"
-                required
-                placeholder="What do you want to find?"
-                autofocus>
-        </mat-form-field>
+  <form [formGroup]="formGroup"
+        (ngSubmit)="pushQuery()">
+    <mat-form-field class="margin-right">
+      <input formControlName="query"
+             matInput
+             type="text"
+             required
+             placeholder="What do you want to find?">
+    </mat-form-field>
 
-        <button type="submit"
+    <button type="submit"
             mat-button>
-            Find
-        </button>
-    </form>
+      Find
+    </button>
+  </form>
 </footer>
