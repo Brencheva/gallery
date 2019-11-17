@@ -1,13 +1,13 @@
-import {Injectable} from '@angular/core';
-import {Actions, Effect, ofType} from '@ngrx/effects';
-import {select, Store} from '@ngrx/store';
-import {PhotoState} from './state';
-import {ActionType, FetchPhotos, PhotosFailed, PhotosRecieved,} from './actions';
-import {catchError, debounceTime, map, mergeMap} from 'rxjs/operators';
-import {of} from 'rxjs';
-import {Photo} from '../interfaces/photo';
-import {UnsplashService} from '../services/unsplash.service';
-import {selectQuery} from "./selectors";
+import { Injectable } from '@angular/core';
+import { Actions, Effect, ofType } from '@ngrx/effects';
+import { select, Store } from '@ngrx/store';
+import { PhotoState } from './state';
+import { ActionType, FetchPhotos, PhotosFailed, PhotosRecieved, } from './actions';
+import { catchError, debounceTime, map, mergeMap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { Photo } from '../interfaces/photo';
+import { UnsplashService } from '../services/unsplash.service';
+import { selectQuery } from "./selectors";
 
 @Injectable(
   {
@@ -22,30 +22,28 @@ export class PhotoEffects {
   fetchPhotos$ = this.actions$.pipe(
     ofType<FetchPhotos>(ActionType.FETCH_PHOTOS),
 
-    debounceTime(500),
-
     mergeMap(() => {
       return this.store.pipe(select(selectQuery));
     }),
 
     mergeMap((query: string) => {
-        return this.unsplashService.fetchPhotos(query)
-          .pipe(
-            map((photos: Photo[]) => {
-              const actionPayload = {
-                photos: photos.sort(this.sortByDate)
-              };
+      return this.unsplashService.fetchPhotos(query)
+        .pipe(
+          map((photos: Photo[]) => {
+            const actionPayload = {
+              photos: photos.sort(this.sortByDate)
+            };
 
-              return new PhotosRecieved(actionPayload);
-            }),
+            return new PhotosRecieved(actionPayload);
+          }),
 
-            catchError((error: Error) => {
-              const actionPayload = error;
+          catchError((error: Error) => {
+            const actionPayload = error;
 
-              return of(new PhotosFailed(actionPayload));
-            })
-          )
-      }
+            return of(new PhotosFailed(actionPayload));
+          })
+        )
+    }
     )
   );
 

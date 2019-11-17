@@ -2,7 +2,7 @@ $footer-height: 85px;
 
 .content {
     padding: 15px;
-    height: calc(100vh - #{$footer-height});
+    max-height: calc(100vh - #{$footer-height});
     overflow: auto;
 }
 

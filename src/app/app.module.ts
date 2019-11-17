@@ -1,15 +1,14 @@
-import {BrowserModule} from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {NgModule} from '@angular/core';
-import {HttpClientModule} from '@angular/common/http';
-import {ReactiveFormsModule} from '@angular/forms';
-import {AppComponent} from './app.component';
-import {StoreModule} from '@ngrx/store';
-import {photoReducer} from './store/reducer';
-import {EffectsModule} from '@ngrx/effects';
-import {PhotoEffects} from './store/effects';
-import {MatButtonModule, MatFormFieldModule, MatInputModule} from '@angular/material';
-import {ScrollingModule} from '@angular/cdk/scrolling';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
+import { AppComponent } from './app.component';
+import { StoreModule } from '@ngrx/store';
+import { photoReducer } from './store/reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { PhotoEffects } from './store/effects';
+import { MatButtonModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -23,8 +22,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
-    ScrollingModule,
-    StoreModule.forRoot({'photo': photoReducer}),
+    StoreModule.forRoot({ 'photo': photoReducer }),
     EffectsModule.forRoot([PhotoEffects])
   ],
   providers: [],

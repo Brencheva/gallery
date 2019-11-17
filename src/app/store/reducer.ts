@@ -1,5 +1,6 @@
-import {PhotoState} from './state';
-import {ActionType, PhotoActions} from './actions';
+import { PhotoState } from './state';
+import { ActionType, PhotoActions } from './actions';
+import { query } from '@angular/animations';
 
 export const initialState: PhotoState = {
   error: null,
@@ -28,10 +29,12 @@ export const photoReducer = (state = initialState, action: PhotoActions): PhotoS
         error: action.payload
       };
     case ActionType.PUSH_QUERY:
-      return {
-        ...state,
-        query: action.payload.query
-      };
+      if (state.query !== action.payload.query) {
+        return {
+          ...state,
+          query: action.payload.query
+        };
+      }
 
     default:
       return state;
