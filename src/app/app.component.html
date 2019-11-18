@@ -1,29 +1,29 @@
 <main class="content"
-  #main
-  (scroll)="addFetchingAndDownloadingPhotos(main)">
+      #main
+      (scroll)="addTrackingAndDownloadingPhotos(main)">
   <ul class="grid-box list-style-none">
     <li *ngFor="let photo of photos$ | async">
       <img class="image"
-        src="../assets/еаг.jpg"
-        [attr.data-src]="photo.urls.small"
-        [alt]="photo.alt_description">
+           src="../assets/еаг.jpg"
+           [attr.data-src]="photo.urls.small"
+           [alt]="photo.alt_description">
     </li>
   </ul>
 </main>
 
 <footer class="footer">
   <form [formGroup]="formGroup"
-    (ngSubmit)="pushQuery()">
+        (ngSubmit)="pushQuery()">
     <mat-form-field class="margin-right">
       <input formControlName="query"
-        matInput
-        type="text"
-        required
-        placeholder="What do you want to find?">
+             matInput
+             type="text"
+             required
+             placeholder="What do you want to find?">
     </mat-form-field>
 
     <button type="submit"
-      mat-button>
+            mat-button>
       Find
     </button>
   </form>

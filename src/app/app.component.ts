@@ -1,12 +1,12 @@
-import { ChangeDetectionStrategy, Component, OnInit, HostListener, ViewChild, ElementRef, AfterViewInit, AfterViewChecked } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { PhotoState } from './store/state';
-import { Observable } from 'rxjs';
-import { Photo } from './interfaces/photo';
-import { selectPhotos } from './store/selectors';
-import { ClearPhotos, FetchPhotos, PushQuery } from './store/actions';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { tap } from 'rxjs/operators';
+import {AfterViewChecked, ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {PhotoState} from './store/state';
+import {Observable} from 'rxjs';
+import {Photo} from './interfaces/photo';
+import {selectPhotos} from './store/selectors';
+import {ClearPhotos, FetchPhotos, PushQuery} from './store/actions';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {ScrollMonitorService} from "./services/scroll-monitor.service";
 
 @Component(
   {
@@ -28,7 +28,8 @@ export class AppComponent implements OnInit, AfterViewChecked {
     }
   );
 
-  constructor(private store: Store<PhotoState>) {
+  constructor(private scrollMonitorService: ScrollMonitorService,
+              private store: Store<PhotoState>) {
   }
 
   ngOnInit() {
@@ -36,41 +37,15 @@ export class AppComponent implements OnInit, AfterViewChecked {
   }
 
   ngAfterViewChecked() {
-    this.downloadPhotos();
+    this.scrollMonitorService.downloadPhotos(document.body.clientHeight - this.footerHeight);
   }
 
-  addFetchingAndDownloadingPhotos = (container): void => {
-    if (container.scrollTop + container.clientHeight >= container.scrollHeight) {
-      this.store.dispatch(new FetchPhotos());
-    }
+  addTrackingAndDownloadingPhotos = (container): void => {
+    this.scrollMonitorService.trackPhotos(container);
 
-    this.downloadPhotos();
+    this.scrollMonitorService.downloadPhotos(document.body.clientHeight - this.footerHeight);
   };
 
-  downloadPhotos = (): void => {
-    const containerHeight = document.body.clientHeight - this.footerHeight;
-
-    document.querySelectorAll('img').forEach((image) => {
-      const src = image.dataset.src;
-
-      if (!src) {
-        return;
-      }
-
-      if (this.isVisible(image, containerHeight)) {
-        image.src = src;
-        image.dataset.src = '';
-      }
-    })
-  };
-
-  isVisible = (image, containerHeight): boolean => {
-    const coordinates = image.getBoundingClientRect();
-    const topIsVisible = coordinates.top > 0 && coordinates.top < containerHeight;
-    const bottomIsVisible = coordinates.bottom > 0 && coordinates.bottom < containerHeight;
-
-    return topIsVisible || bottomIsVisible;
-  };
 
   pushQuery = (): void => {
     if (!this.formGroup.controls.query.value) {
